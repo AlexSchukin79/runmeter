@@ -40,6 +40,9 @@ public class MainActivity extends Activity {
 	    locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 	    if(savedInstanceState != null) {
 	    	distanse = savedInstanceState.getFloat("dis",0);
+	    	myChronometer.setBase((Long) savedInstanceState.get("time"));
+	    	myChronometer.start();
+
 	    }
 		
 	    myChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
@@ -54,6 +57,7 @@ public class MainActivity extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		// TODO Auto-generated method stub
 		outState.putFloat("dis", distanse);
+		outState.putLong("time", myChronometer.getBase());
 		super.onSaveInstanceState(outState);
 	}
 	 
@@ -62,24 +66,17 @@ public class MainActivity extends Activity {
 	    super.onResume();
 	    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 	        1000, 5, locationListener);
-		/*
-		 * locationManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER,
-		 * 1000, 10, locationListener);
-		 */
+		
 	    checkEnabled();
 	  }
 	 
-	/*
-	 * @Override protected void onPause() { super.onPause();
-	 * locationManager.removeUpdates(locationListener); }
-	 */
-
+	
 	  private LocationListener locationListener = new LocationListener() {
 	 
 	    @Override
 	    public void onLocationChanged(Location location) {
 	    if((lastLocation == null)
-	    		//|| location.distanceTo(lastLocation) > 10
+	    		|| location.distanceTo(lastLocation) > 25 
 	    		) {
 	    	lastLocation = location;
 	    }
@@ -102,10 +99,7 @@ public class MainActivity extends Activity {
 	    public void onStatusChanged(String provider, int status, Bundle extras) {
 	      if (provider.equals(LocationManager.GPS_PROVIDER)) {
 	        tvStatusGPS.setText("Status: " + String.valueOf(status));
-			} /*
-				 * else if (provider.equals(LocationManager.NETWORK_PROVIDER)) {
-				 * tvStatusNet.setText("Status: " + String.valueOf(status)); }
-				 */
+			} 
 	    }
 	  };
 	 
@@ -115,20 +109,7 @@ public class MainActivity extends Activity {
 	    if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
 	      tvLocationGPS.setText(String.valueOf(new Date(location.getTime())) + "\n"+
 	    		  				"Distance: " + distanse);
-		} /*
-			 * else if (location.getProvider().equals( LocationManager.NETWORK_PROVIDER)) {
-			 * tvLocationNet.setText(formatLocation(location)); }
-			 */
-	  }
-	 
-	  private String formatLocation(Location location) {
-	    if (location == null)
-	      return "";
-	    return String.format(
-	        "Coordinates: lat = %1$.4f, lon = %2$.4f, time = %3$tF %3$tT,"
-	        + " accuracy = %4$.1f : distance =%5$s ",
-	        location.getLatitude(), location.getLongitude(), new Date(
-	            location.getTime()), location.getAccuracy(), distanse);
+		} 
 	  }
 	 
 	  private void checkEnabled() {
@@ -141,10 +122,7 @@ public class MainActivity extends Activity {
 	  }
 	 
 	  public void onClickLocationSettings(View view) {
-		/*
-		 * startActivity(new Intent(
-		 * android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-		 */	  
+		  
 		distanse = 0;
 		myChronometer.setBase(SystemClock.elapsedRealtime());
 		myChronometer.start();
