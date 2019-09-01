@@ -10,12 +10,14 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
+import android.view.ViewDebug.FlagToString;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	 
-	  private Chronometer myChronometer;
+	  private Chronometer myChronometer = null;
+	  int  flag = 0;
 	  Location lastLocation;
 	  TextView tvEnabledGPS;
 	  TextView tvStatusGPS;
@@ -34,15 +36,18 @@ public class MainActivity extends Activity {
 	    tvStatusGPS = (TextView) findViewById(R.id.tvStatusGPS);
 	    tvLocationGPS = (TextView) findViewById(R.id.tvLocationGPS);
 	    tvEnabledNet = (TextView) findViewById(R.id.tvEnabledNet);
-	    tvStatusNet = (TextView) findViewById(R.id.tvStatusNet);
+	   // tvStatusNet = (TextView) findViewById(R.id.tvStatusNet);
 	    myChronometer = (Chronometer) findViewById(R.id.chronometer1);
 	 
 	    locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+	    
 	    if(savedInstanceState != null) {
 	    	distanse = savedInstanceState.getFloat("dis",0);
+	    	flag = savedInstanceState.getInt("flag");
+	    	if(flag == 1) {
 	    	myChronometer.setBase((Long) savedInstanceState.get("time"));
 	    	myChronometer.start();
-
+	    	}
 	    }
 		
 	    myChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
@@ -57,7 +62,12 @@ public class MainActivity extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		// TODO Auto-generated method stub
 		outState.putFloat("dis", distanse);
+		outState.putInt("flag", flag);
+		if(flag == 1) {
 		outState.putLong("time", myChronometer.getBase());
+		} else {
+			outState.putLong("time", myChronometer.getBase());
+		}
 		super.onSaveInstanceState(outState);
 	}
 	 
@@ -76,7 +86,7 @@ public class MainActivity extends Activity {
 	    @Override
 	    public void onLocationChanged(Location location) {
 	    if((lastLocation == null)
-	    		|| location.distanceTo(lastLocation) > 25 
+	    		|| location.distanceTo(lastLocation) > 17 
 	    		) {
 	    	lastLocation = location;
 	    }
@@ -121,8 +131,8 @@ public class MainActivity extends Activity {
 	            .isProviderEnabled(LocationManager.NETWORK_PROVIDER));
 	  }
 	 
-	  public void onClickLocationSettings(View view) {
-		  
+	  public void onClickStart(View view) {
+		flag = 1;  
 		distanse = 0;
 		myChronometer.setBase(SystemClock.elapsedRealtime());
 		myChronometer.start();
