@@ -3,12 +3,14 @@ package com.example.p180;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.view.View;
 import android.view.ViewDebug.FlagToString;
 import android.widget.Chronometer;
@@ -18,6 +20,7 @@ public class MainActivity extends Activity {
 	 
 	  private Chronometer myChronometer = null;
 	  int  flag = 0;
+	  long time;
 	  Location lastLocation;
 	  TextView tvEnabledGPS;
 	  TextView tvStatusGPS;
@@ -36,7 +39,6 @@ public class MainActivity extends Activity {
 	    tvStatusGPS = (TextView) findViewById(R.id.tvStatusGPS);
 	    tvLocationGPS = (TextView) findViewById(R.id.tvLocationGPS);
 	    tvEnabledNet = (TextView) findViewById(R.id.tvEnabledNet);
-	   // tvStatusNet = (TextView) findViewById(R.id.tvStatusNet);
 	    myChronometer = (Chronometer) findViewById(R.id.chronometer1);
 	 
 	    locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -45,8 +47,12 @@ public class MainActivity extends Activity {
 	    	distanse = savedInstanceState.getFloat("dis",0);
 	    	flag = savedInstanceState.getInt("flag");
 	    	if(flag == 1) {
-	    	myChronometer.setBase((Long) savedInstanceState.get("time"));
-	    	myChronometer.start();
+	    		myChronometer.setBase((Long) savedInstanceState.get("time"));
+	    		myChronometer.start();
+	    	}
+	    	if (flag == 2) {
+      		  time = savedInstanceState.getLong("elapsedTime");
+			  myChronometer.setBase(SystemClock.elapsedRealtime() + time);
 	    	}
 	    }
 		
@@ -63,11 +69,8 @@ public class MainActivity extends Activity {
 		// TODO Auto-generated method stub
 		outState.putFloat("dis", distanse);
 		outState.putInt("flag", flag);
-		if(flag == 1) {
 		outState.putLong("time", myChronometer.getBase());
-		} else {
-			outState.putLong("time", myChronometer.getBase());
-		}
+		outState.putLong("elapsedTime", time);
 		super.onSaveInstanceState(outState);
 	}
 	 
@@ -112,7 +115,12 @@ public class MainActivity extends Activity {
 			} 
 	    }
 	  };
-	 
+	  
+	  public void vibro() {
+		Vibrator vibroVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+	    vibroVibrator.vibrate(100);
+	}
+	  
 	  private void showLocation(Location location) {
 	    if (location == null)
 	      return;
@@ -126,18 +134,24 @@ public class MainActivity extends Activity {
 	    tvEnabledGPS.setText("Enabled: "
 	        + locationManager
 	            .isProviderEnabled(LocationManager.GPS_PROVIDER));
-	    tvEnabledNet.setText("Enabled: "
-	        + locationManager
-	            .isProviderEnabled(LocationManager.NETWORK_PROVIDER));
 	  }
 	 
 	  public void onClickStart(View view) {
 		flag = 1;  
 		distanse = 0;
 		myChronometer.setBase(SystemClock.elapsedRealtime());
+		vibro();
 		myChronometer.start();
 	  };
 	  
+	  public void onClickStop(View v) {
+		  flag = 2;
+		  time = myChronometer.getBase() - SystemClock.elapsedRealtime();
+		  vibro();
+		  myChronometer.stop();
+	  }
+	  
+	 
 		 
 	}
 
