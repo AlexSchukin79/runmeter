@@ -4,7 +4,6 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.view.View;
-import android.view.ViewDebug.FlagToString;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
@@ -21,6 +19,7 @@ public class MainActivity extends Activity {
 	  private Chronometer myChronometer = null;
 	  int  flag = 0;
 	  long time;
+	  String getTime;
 	  Location lastLocation;
 	  TextView tvEnabledGPS;
 	  TextView tvStatusGPS;
@@ -85,15 +84,18 @@ public class MainActivity extends Activity {
 	 
 	
 	  private LocationListener locationListener = new LocationListener() {
-	 
+		  int a = 0;
+		LastTime timer = new LastTime(); 
 	    @Override
 	    public void onLocationChanged(Location location) {
-	    if((lastLocation == null)
-	    		|| location.distanceTo(lastLocation) > 17 
-	    		) {
+	    if((lastLocation == null) || location.distanceTo(lastLocation) > timer.meter ) {
 	    	lastLocation = location;
-	    }
-	    distanse += location.distanceTo(lastLocation);
+	    	}
+	    
+	    tvEnabledNet.setText(String.valueOf(timer.last()));
+	    if(flag == 1) {
+	    	 distanse += location.distanceTo(lastLocation);
+	    	}
 	      showLocation(location);
 	    }
 	 
@@ -125,11 +127,15 @@ public class MainActivity extends Activity {
 	    if (location == null)
 	      return;
 	    if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
-	      tvLocationGPS.setText(String.valueOf(new Date(location.getTime())) + "\n"+
-	    		  				"Distance: " + distanse);
+	       getTime =  String.valueOf(new Date(location.getTime()));
+	       show();
 		} 
 	  }
 	 
+	  private void show() {
+		tvLocationGPS.setText(getTime + "\n" + "Distance: " + distanse);
+	}
+	  
 	  private void checkEnabled() {
 	    tvEnabledGPS.setText("Enabled: "
 	        + locationManager
@@ -139,6 +145,7 @@ public class MainActivity extends Activity {
 	  public void onClickStart(View view) {
 		flag = 1;  
 		distanse = 0;
+		show();
 		myChronometer.setBase(SystemClock.elapsedRealtime());
 		vibro();
 		myChronometer.start();
