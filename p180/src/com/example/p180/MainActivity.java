@@ -58,7 +58,6 @@ public class MainActivity extends Activity {
 	    myChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
-                long elapsedMillis = SystemClock.elapsedRealtime() - myChronometer.getBase();
             }
 		  });
 	     
