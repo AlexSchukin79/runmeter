@@ -3,6 +3,8 @@ package com.example.p180;
 import java.util.Date;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 	 
 	  private Chronometer myChronometer = null;
+	  DBHelper dbHelper;
 	  int  flag = 0;
 	  long time;
 	  String getTime;
@@ -29,6 +32,8 @@ public class MainActivity extends Activity {
 	  TextView tvLocationNet;
 	  float distanse;
 	  private LocationManager locationManager;
+	  
+	  
 	 
 	  @Override
 	  protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,7 @@ public class MainActivity extends Activity {
 	 
 	    locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 	    
+	    dbHelper = new DBHelper(this);
 	    if(savedInstanceState != null) {
 	    	distanse = savedInstanceState.getFloat("dis",0);
 	    	flag = savedInstanceState.getInt("flag");
@@ -60,7 +66,7 @@ public class MainActivity extends Activity {
             public void onChronometerTick(Chronometer chronometer) {
             }
 		  });
-	     
+	    // dbHelper.close();
 	  }
 	  
 	protected void onSaveInstanceState(Bundle outState) {
@@ -77,7 +83,7 @@ public class MainActivity extends Activity {
 	    super.onResume();
 	    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 	        1000, 5, locationListener);
-		
+ 
 	    checkEnabled();
 	  }
 	 
@@ -137,8 +143,7 @@ public class MainActivity extends Activity {
 	  
 	  private void checkEnabled() {
 	    tvEnabledGPS.setText("Enabled: "
-	        + locationManager
-	            .isProviderEnabled(LocationManager.GPS_PROVIDER));
+	        + locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
 	  }
 	 
 	  public void onClickStart(View view) {
@@ -155,9 +160,7 @@ public class MainActivity extends Activity {
 		  time = myChronometer.getBase() - SystemClock.elapsedRealtime();
 		  vibro();
 		  myChronometer.stop();
-	  }
-	  
-	 
-		 
+		  dbHelper.close();
+	  };
 	}
 
