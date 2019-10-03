@@ -12,6 +12,7 @@ class DBHelper extends SQLiteOpenHelper {
       // конструктор суперкласса
       super(context, "myDB", null, 1);
       this.cxtContext = context;
+      Toast.makeText(cxtContext, "construct base", Toast.LENGTH_LONG).show();
     }
  
     @Override
@@ -26,7 +27,7 @@ class DBHelper extends SQLiteOpenHelper {
  
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    	//DBHelpedb.execSQL("DROP TABLE IF EXISTS" + "mytable");
+    	//DBHelpedb.execSQL("DROP TABLE IF EXISTS" + "myTable");
     	Toast.makeText(cxtContext, "Upgrade  base", Toast.LENGTH_LONG).show();
     }
   }

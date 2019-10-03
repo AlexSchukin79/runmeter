@@ -1,17 +1,19 @@
 package com.example.p180;
 
 import java.util.Date;
-
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.TextView;
@@ -19,7 +21,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 	 
 	  private Chronometer myChronometer = null;
-	  DBHelper dbHelper;
+	  IODataBase iodb;
 	  int  flag = 0;
 	  long time;
 	  String getTime;
@@ -47,7 +49,7 @@ public class MainActivity extends Activity {
 	 
 	    locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 	    
-	    dbHelper = new DBHelper(this);
+	    iodb = new IODataBase(this);
 	    if(savedInstanceState != null) {
 	    	distanse = savedInstanceState.getFloat("dis",0);
 	    	flag = savedInstanceState.getInt("flag");
@@ -66,7 +68,6 @@ public class MainActivity extends Activity {
             public void onChronometerTick(Chronometer chronometer) {
             }
 		  });
-	    // dbHelper.close();
 	  }
 	  
 	protected void onSaveInstanceState(Bundle outState) {
@@ -153,6 +154,7 @@ public class MainActivity extends Activity {
 		myChronometer.setBase(SystemClock.elapsedRealtime());
 		vibro();
 		myChronometer.start();
+		//iodb.createDB();
 	  };
 	  
 	  public void onClickStop(View v) {
@@ -160,7 +162,37 @@ public class MainActivity extends Activity {
 		  time = myChronometer.getBase() - SystemClock.elapsedRealtime();
 		  vibro();
 		  myChronometer.stop();
-		  dbHelper.close();
+		  //iodb.writeData(distanse, time);
+		  //iodb.closeDB();
+		  tvEnabledNet.setText(String.valueOf(time));
 	  };
+	  
+	  @Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			// Inflate the menu; this adds items to the action bar if it is present.
+			getMenuInflater().inflate(R.menu.main, menu);
+			//enu.add("история");
+			return true;
+		}
+
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			// Handle action bar item clicks here. The action bar will
+			// automatically handle clicks on the Home/Up button, so long
+			// as you specify a parent activity in AndroidManifest.xml.
+		
+			switch (item.getItemId()) {
+			case R.id.item1 :
+				vibro();
+				Intent intent = new Intent(this, HistoryActivity.class);
+				startActivity(intent);
+				break;
+
+			default:
+				break;
+			}
+			
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
