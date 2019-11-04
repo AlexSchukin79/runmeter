@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">p180</string>
+    <string name="hello_world">Первое приложение</string>
+    <string name="action_settings">Settings</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Network</string>
+    <string name="location_settings">start</string>
+    <string name="stop">стоп</string>
+    <string name="title_activity_history">HistoryActivity</string>
+
+</resources>

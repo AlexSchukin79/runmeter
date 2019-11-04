@@ -8,7 +8,7 @@ Date timesDate = new Date();
 
 public long last() {
 	Date timDate = new Date();
-	long last = (timDate.getTime() - timesDate.getTime()) * 17 / 1000;
+	long last = (timDate.getTime() - timesDate.getTime()) * 15 / 1000;
 	timesDate.setTime(timDate.getTime());
 	return last;
 }
