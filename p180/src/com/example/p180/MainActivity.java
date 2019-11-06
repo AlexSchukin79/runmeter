@@ -1,6 +1,9 @@
 package com.example.p180;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -34,6 +37,7 @@ public class MainActivity extends Activity {
 	  TextView tvLocationNet;
 	  float distanse;
 	  private LocationManager locationManager;
+	  ArrayList<String> mass;
 	  
 	  
 	 
@@ -154,7 +158,7 @@ public class MainActivity extends Activity {
 		myChronometer.setBase(SystemClock.elapsedRealtime());
 		vibro();
 		myChronometer.start();
-		//iodb.createDB();
+		iodb.createDB();
 	  };
 	  
 	  public void onClickStop(View v) {
@@ -162,8 +166,9 @@ public class MainActivity extends Activity {
 		  time = myChronometer.getBase() - SystemClock.elapsedRealtime();
 		  vibro();
 		  myChronometer.stop();
-		  //iodb.writeData(distanse, time);
-		  //iodb.closeDB();
+		  iodb.writeData(distanse, time);
+		  mass = iodb.readData();
+		  iodb.closeDB();
 		  tvEnabledNet.setText(String.valueOf(time));
 	  };
 	  
@@ -181,10 +186,13 @@ public class MainActivity extends Activity {
 			// automatically handle clicks on the Home/Up button, so long
 			// as you specify a parent activity in AndroidManifest.xml.
 		
+			//final String[] mass = new String[] {"1", "2", "0", "4"};
+			
 			switch (item.getItemId()) {
 			case R.id.item1 :
 				vibro();
 				Intent intent = new Intent(this, HistoryActivity.class);
+				intent.putExtra("mass", mass);
 				startActivity(intent);
 				break;
 

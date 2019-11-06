@@ -1,5 +1,9 @@
 package com.example.p180;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.R.integer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -38,11 +42,24 @@ public class IODataBase {
 		Toast.makeText(ctx, "id = " + id, Toast.LENGTH_LONG).show();
 	}
 	
-	public void readData() {
+	public ArrayList<String> readData() {
 		
+		dbDatabase = dbHelper.getReadableDatabase();
 		Cursor cursor = dbDatabase.query("myTable", null, null, null, null, null, null);
+		ArrayList<String> distance = new ArrayList<String>();
+		int distanceColumn = 0;
+		long timeColumn = 0;
+		
 		if(cursor.moveToFirst()) {
-			
+			int dateColumn = cursor.getColumnIndex("date");
+			distanceColumn = cursor.getColumnIndex("distance");
+		    timeColumn = cursor.getColumnIndex("time"); 
 		}
+		while(cursor.moveToNext()) {
+			distance.add(Long.toString(cursor.getLong((int) timeColumn)));
+		}
+		cursor.close();
+		//distance.add("dddd");
+		return distance; 
 	}
 }
