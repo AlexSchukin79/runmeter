@@ -47,19 +47,25 @@ public class IODataBase {
 		dbDatabase = dbHelper.getReadableDatabase();
 		Cursor cursor = dbDatabase.query("myTable", null, null, null, null, null, null);
 		ArrayList<String> distance = new ArrayList<String>();
+		ArrayList<String> dateArrayList = new ArrayList<String>();
+		ArrayList<String> timeArrayList = new ArrayList<String>();
+		
 		int distanceColumn = 0;
-		long timeColumn = 0;
+		int timeColumn = 0;
+		int dateColumn = 0;
 		
 		if(cursor.moveToFirst()) {
-			int dateColumn = cursor.getColumnIndex("date");
+			dateColumn = cursor.getColumnIndex("date");
 			distanceColumn = cursor.getColumnIndex("distance");
 		    timeColumn = cursor.getColumnIndex("time"); 
 		}
 		while(cursor.moveToNext()) {
-			distance.add(Long.toString(cursor.getLong((int) timeColumn)));
+			distance.add(Integer.toString(cursor.getInt(distanceColumn)));
+			dateArrayList.add(Integer.toString(cursor.getInt(dateColumn)));
+			timeArrayList.add(Integer.toString(cursor.getInt(timeColumn)));
 		}
 		cursor.close();
 		//distance.add("dddd");
-		return distance; 
+		return timeArrayList; 
 	}
 }

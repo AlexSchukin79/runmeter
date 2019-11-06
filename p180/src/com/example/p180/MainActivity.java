@@ -166,7 +166,7 @@ public class MainActivity extends Activity {
 		  time = myChronometer.getBase() - SystemClock.elapsedRealtime();
 		  vibro();
 		  myChronometer.stop();
-		  iodb.writeData(distanse, time);
+		  //iodb.writeData(distanse, time);
 		  mass = iodb.readData();
 		  iodb.closeDB();
 		  tvEnabledNet.setText(String.valueOf(time));

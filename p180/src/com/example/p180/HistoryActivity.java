@@ -11,6 +11,7 @@ public class HistoryActivity extends Activity {
 
 	final String[] myArr = new String[] {"1", "2", "3", "4"};
 	ListView listWiev1;
+	//IODataBase ioDB;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +19,8 @@ public class HistoryActivity extends Activity {
 		setContentView(R.layout.activity_history);
 		
 		Bundle extrasBundle = getIntent().getExtras();
-		ArrayList<String> myArrStrings =(ArrayList<String>) getIntent().getSerializableExtra("mass"); 
+		ArrayList<String> myArrStrings =(ArrayList<String>) getIntent().getSerializableExtra("mass");
+		//ioDB.createDB();
 		listWiev1 = (ListView)findViewById(R.id.listView1);
 		listWiev1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
