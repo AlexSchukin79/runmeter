@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.SparseArray;
 import android.widget.Toast;
 
 public class IODataBase {
@@ -42,13 +43,13 @@ public class IODataBase {
 		Toast.makeText(ctx, "id = " + id, Toast.LENGTH_LONG).show();
 	}
 	
-	public ArrayList<String> readData() {
+	public SparseArray<List<String>> readData() {
 		
 		dbDatabase = dbHelper.getReadableDatabase();
 		Cursor cursor = dbDatabase.query("myTable", null, null, null, null, null, null);
-		ArrayList<String> distance = new ArrayList<String>();
-		ArrayList<String> dateArrayList = new ArrayList<String>();
-		ArrayList<String> timeArrayList = new ArrayList<String>();
+		List<String> distance = new ArrayList<String>();
+		List<String> dateArrayList = new ArrayList<String>();
+		List<String> timeArrayList = new ArrayList<String>();
 		
 		int distanceColumn = 0;
 		int timeColumn = 0;
@@ -65,7 +66,16 @@ public class IODataBase {
 			timeArrayList.add(Integer.toString(cursor.getInt(timeColumn)));
 		}
 		cursor.close();
-		//distance.add("dddd");
-		return timeArrayList; 
+		SparseArray<List<String>> datArray = new SparseArray<List<String>>();
+		datArray.append(0, timeArrayList);
+		datArray.append(1, dateArrayList);
+		datArray.append(2, distance);
+		
+		return datArray; 
+	}
+	
+	public void delete(String delString) {
+		dbDatabase = dbHelper.getWritableDatabase();
+		dbDatabase.delete("myTable", "time = " + delString, null);
 	}
 }

@@ -1,12 +1,7 @@
 package com.example.p180;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -37,7 +32,6 @@ public class MainActivity extends Activity {
 	  TextView tvLocationNet;
 	  float distanse;
 	  private LocationManager locationManager;
-	  ArrayList<String> mass;
 	  
 	  
 	 
@@ -167,7 +161,6 @@ public class MainActivity extends Activity {
 		  vibro();
 		  myChronometer.stop();
 		  //iodb.writeData(distanse, time);
-		  mass = iodb.readData();
 		  iodb.closeDB();
 		  tvEnabledNet.setText(String.valueOf(time));
 	  };
@@ -192,7 +185,6 @@ public class MainActivity extends Activity {
 			case R.id.item1 :
 				vibro();
 				Intent intent = new Intent(this, HistoryActivity.class);
-				intent.putExtra("mass", mass);
 				startActivity(intent);
 				break;
 
