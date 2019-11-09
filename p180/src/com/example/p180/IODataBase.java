@@ -1,7 +1,9 @@
 package com.example.p180;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.R.integer;
 import android.content.ContentValues;
@@ -43,7 +45,7 @@ public class IODataBase {
 		Toast.makeText(ctx, "id = " + id, Toast.LENGTH_LONG).show();
 	}
 	
-	public SparseArray<List<String>> readData() {
+	public ArrayList<Map<String, Object>> readData() {
 		
 		dbDatabase = dbHelper.getReadableDatabase();
 		Cursor cursor = dbDatabase.query("myTable", null, null, null, null, null, null);
@@ -55,15 +57,26 @@ public class IODataBase {
 		int timeColumn = 0;
 		int dateColumn = 0;
 		
+		ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+			    Map<String, Object> m;
+			    
 		if(cursor.moveToFirst()) {
 			dateColumn = cursor.getColumnIndex("date");
 			distanceColumn = cursor.getColumnIndex("distance");
 		    timeColumn = cursor.getColumnIndex("time"); 
 		}
 		while(cursor.moveToNext()) {
-			distance.add(Integer.toString(cursor.getInt(distanceColumn)));
-			dateArrayList.add(Integer.toString(cursor.getInt(dateColumn)));
-			timeArrayList.add(Integer.toString(cursor.getInt(timeColumn)));
+//			distance.add(Integer.toString(cursor.getInt(distanceColumn)));
+//			dateArrayList.add(Integer.toString(cursor.getInt(dateColumn)));
+//			timeArrayList.add(Integer.toString(cursor.getInt(timeColumn)));
+			
+			    
+			      m = new HashMap<String, Object>();
+			      m.put("distance", Integer.toString(cursor.getInt(distanceColumn)));
+			      m.put("date",Integer.toString(cursor.getInt(dateColumn)));
+			      m.put("time", Integer.toString(cursor.getInt(timeColumn)));
+			      data.add(m);
+			    
 		}
 		cursor.close();
 		SparseArray<List<String>> datArray = new SparseArray<List<String>>();
@@ -71,7 +84,7 @@ public class IODataBase {
 		datArray.append(1, dateArrayList);
 		datArray.append(2, distance);
 		
-		return datArray; 
+		return data; 
 	}
 	
 	public void delete(String delString) {

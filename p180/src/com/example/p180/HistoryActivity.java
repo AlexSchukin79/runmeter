@@ -1,11 +1,15 @@
 package com.example.p180;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 public class HistoryActivity extends Activity {
 
@@ -20,8 +24,10 @@ public class HistoryActivity extends Activity {
 		ioDB = new IODataBase(this);
 		
 		ioDB.createDB();
-		SparseArray<List<String>> myData = ioDB.readData();
-		List<String> myArrStrings = myData.get(1);
+		ArrayList<Map<String, Object>> myData = ioDB.readData();
+//		List<String> dataTimeList = myData.get(0);
+//		List<String> myArrStrings = myData.get(1);
+//		List<String> dataDistanceList = myData.get(2);
 		ioDB.delete("200");
 		
 		ioDB.closeDB();
@@ -29,7 +35,8 @@ public class HistoryActivity extends Activity {
 		listWiev1 = (ListView)findViewById(R.id.listView1);
 		listWiev1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
-		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myArrStrings);
+		SimpleAdapter myAdapter = new SimpleAdapter(this, myData, R.layout.item, new String[] {"date", "distance", "time"}, 
+									new int[] {R.id.textView1, R.id.textView2, R.id.textView3});
 		
 		listWiev1.setAdapter(myAdapter);
 	}

@@ -180,7 +180,7 @@ public class MainActivity extends Activity {
 			// as you specify a parent activity in AndroidManifest.xml.
 		
 			//final String[] mass = new String[] {"1", "2", "0", "4"};
-			
+			//tvEnabledNet.setText("menu");
 			switch (item.getItemId()) {
 			case R.id.item1 :
 				vibro();
