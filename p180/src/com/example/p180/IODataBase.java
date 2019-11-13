@@ -22,7 +22,7 @@ public class IODataBase {
 	DBHelper dbHelper;
 	SQLiteDatabase dbDatabase;
 	
-	public IODataBase(Context context) {// constructor
+	public IODataBase(Context context) {
 		this.ctx = context;
 	}
 	
@@ -56,10 +56,7 @@ public class IODataBase {
 		
 		dbDatabase = dbHelper.getReadableDatabase();
 		Cursor cursor = dbDatabase.query("myTable", null, null, null, null, null, null);
-		List<String> distance = new ArrayList<String>();
-		List<String> dateArrayList = new ArrayList<String>();
-		List<String> timeArrayList = new ArrayList<String>();
-		
+				
 		int distanceColumn = 0;
 		int timeColumn = 0;
 		int dateColumn = 0;
@@ -73,11 +70,6 @@ public class IODataBase {
 		    timeColumn = cursor.getColumnIndex("time"); 
 		}
 		 do {
-//			distance.add(Integer.toString(cursor.getInt(distanceColumn)));
-//			dateArrayList.add(Integer.toString(cursor.getInt(dateColumn)));
-//			timeArrayList.add(Integer.toString(cursor.getInt(timeColumn)));
-			
-			    
 			      m = new HashMap<String, Object>();
 			      m.put("distance", cursor.getString(distanceColumn));
 			      m.put("date", cursor.getString(dateColumn));
@@ -86,11 +78,7 @@ public class IODataBase {
 			    
 		}while(cursor.moveToNext());
 		cursor.close();
-//		SparseArray<List<String>> datArray = new SparseArray<List<String>>();
-//		datArray.append(0, timeArrayList);
-//		datArray.append(1, dateArrayList);
-//		datArray.append(2, distance);
-//		
+		
 		return data; 
 	}
 	
