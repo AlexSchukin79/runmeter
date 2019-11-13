@@ -19,9 +19,9 @@ class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
       // создаем таблицу с полями
       db.execSQL("create table myTable ("
-          + "date numeric,"
-          + "distance real,"
-          + "time integer" + ");");
+          + "date text,"
+          + "distance text,"
+          + "time text" + ");");
       Toast.makeText(cxtContext, "create base", Toast.LENGTH_LONG).show();
     }
  

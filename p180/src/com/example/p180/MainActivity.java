@@ -13,16 +13,19 @@ import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	 
-	  private Chronometer myChronometer = null;
+	  private Chronometer myChronometer;
 	  IODataBase iodb;
 	  int  flag = 0;
 	  long time;
 	  String getTime;
+	  Button btnStart;
+	  Button btnStop;
 	  Location lastLocation;
 	  TextView tvEnabledGPS;
 	  TextView tvStatusGPS;
@@ -44,6 +47,9 @@ public class MainActivity extends Activity {
 	    tvLocationGPS = (TextView) findViewById(R.id.tvLocationGPS);
 	    tvEnabledNet = (TextView) findViewById(R.id.tvEnabledNet);
 	    myChronometer = (Chronometer) findViewById(R.id.chronometer1);
+	    btnStart = (Button)findViewById(R.id.btnStart);
+	    btnStop = (Button)findViewById(R.id.btnStop);
+	    btnStop.setEnabled(false);
 	 
 	    locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 	    
@@ -152,7 +158,8 @@ public class MainActivity extends Activity {
 		myChronometer.setBase(SystemClock.elapsedRealtime());
 		vibro();
 		myChronometer.start();
-		iodb.createDB();
+		btnStop.setEnabled(true);
+		btnStart.setEnabled(false);
 	  };
 	  
 	  public void onClickStop(View v) {
@@ -160,34 +167,36 @@ public class MainActivity extends Activity {
 		  time = myChronometer.getBase() - SystemClock.elapsedRealtime();
 		  vibro();
 		  myChronometer.stop();
-		  //iodb.writeData(distanse, time);
+		  iodb.createDB();
+		  iodb.writeData( distanse / 1000, time * (-1) -7 * 60 * 60 * 1000 );
 		  iodb.closeDB();
 		  tvEnabledNet.setText(String.valueOf(time));
+		  btnStop.setEnabled(false);
+		  btnStart.setEnabled(true);
 	  };
 	  
 	  @Override
 		public boolean onCreateOptionsMenu(Menu menu) {
 			// Inflate the menu; this adds items to the action bar if it is present.
 			getMenuInflater().inflate(R.menu.main, menu);
-			//enu.add("история");
 			return true;
 		}
 
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
-			// Handle action bar item clicks here. The action bar will
-			// automatically handle clicks on the Home/Up button, so long
-			// as you specify a parent activity in AndroidManifest.xml.
-		
-			//final String[] mass = new String[] {"1", "2", "0", "4"};
-			//tvEnabledNet.setText("menu");
+			
 			switch (item.getItemId()) {
 			case R.id.item1 :
 				vibro();
 				Intent intent = new Intent(this, HistoryActivity.class);
 				startActivity(intent);
 				break;
-
+				
+			case R.id.itemStat :
+				vibro();
+				Intent intent2 = new Intent(this, StaticActivity.class);
+				startActivity(intent2);
+				
 			default:
 				break;
 			}

@@ -9,5 +9,11 @@
     <string name="location_settings">start</string>
     <string name="stop">стоп</string>
     <string name="title_activity_history">HistoryActivity</string>
+    <string name="strHistory">История</string>
+    <string name="strStat">Статистика</string>
+    <string name="title_activity_static">StaticActivity</string>
+    <string name="dateView">Date</string>
+    <string name="distanceView">Distanse</string>
+    <string name="timeView">Time</string>
 
 </resources>

@@ -29,6 +29,10 @@
             android:name=".HistoryActivity"
             android:label="@string/title_activity_history" >
         </activity>
+        <activity
+            android:name=".StaticActivity"
+            android:label="@string/title_activity_static" >
+        </activity>
     </application>
 
 </manifest>
