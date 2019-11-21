@@ -19,10 +19,11 @@ class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
       // создаем таблицу с полями
       db.execSQL("create table myTable ("
+    	  + "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
           + "date text,"
           + "distance text,"
           + "time text" + ");");
-      Toast.makeText(cxtContext, "create base", Toast.LENGTH_LONG).show();
+      Toast.makeText(cxtContext, "create base", Toast.LENGTH_SHORT).show();
     }
  
     @Override

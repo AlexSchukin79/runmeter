@@ -34,7 +34,7 @@ public class IODataBase {
 	
 	void closeDB() {
 		// TODO Auto-generated method stub
-		Toast.makeText(ctx, "close base", Toast.LENGTH_LONG).show();
+		//Toast.makeText(ctx, "close base", Toast.LENGTH_LONG).show();
 		dbHelper.close();
 	}
 	
@@ -49,7 +49,7 @@ public class IODataBase {
 		cv.put("distance", df.format(distance));
 		cv.put("time", timeString);
 		long id = dbDatabase.insert("myTable", null, cv);
-		Toast.makeText(ctx, timeString, Toast.LENGTH_LONG).show();
+		Toast.makeText(ctx, String.valueOf(id), Toast.LENGTH_LONG).show();
 	}
 	
 	public ArrayList<Map<String, Object>> readData() {
@@ -60,17 +60,19 @@ public class IODataBase {
 		int distanceColumn = 0;
 		int timeColumn = 0;
 		int dateColumn = 0;
-		
+		int idColumn =0;
 		ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 			    Map<String, Object> m;
 			    
 		if(cursor.moveToFirst()) {
+			idColumn = cursor.getColumnIndex("_id");
 			dateColumn = cursor.getColumnIndex("date");
 			distanceColumn = cursor.getColumnIndex("distance");
 		    timeColumn = cursor.getColumnIndex("time"); 
 		}
 		 do {
 			      m = new HashMap<String, Object>();
+			      m.put("id", cursor.getString(idColumn));
 			      m.put("distance", cursor.getString(distanceColumn));
 			      m.put("date", cursor.getString(dateColumn));
 			      m.put("time", cursor.getString(timeColumn));
@@ -84,6 +86,6 @@ public class IODataBase {
 	
 	public void delete(String delString) {
 		dbDatabase = dbHelper.getWritableDatabase();
-		dbDatabase.delete("myTable", "time = " + delString, null);
+		dbDatabase.delete("myTable", "_id = " + delString, null);
 	}
 }
