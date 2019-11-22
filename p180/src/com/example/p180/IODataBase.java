@@ -69,7 +69,7 @@ public class IODataBase {
 			dateColumn = cursor.getColumnIndex("date");
 			distanceColumn = cursor.getColumnIndex("distance");
 		    timeColumn = cursor.getColumnIndex("time"); 
-		}
+		
 		 do {
 			      m = new HashMap<String, Object>();
 			      m.put("id", cursor.getString(idColumn));
@@ -79,6 +79,7 @@ public class IODataBase {
 			      data.add(m);
 			    
 		}while(cursor.moveToNext());
+		}
 		cursor.close();
 		
 		return data; 
