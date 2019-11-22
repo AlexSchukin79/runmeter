@@ -36,19 +36,14 @@ public class HistoryActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_history);
 		ioDB = new IODataBase(this);
-		int r = 0;
 		ioDB.createDB();
 		myData = ioDB.readData();
-		
-//		List<String> dataDistanceList = myData.get(2);
-		//ioDB.delete("0,00");
-		
 		ioDB.closeDB();
 		
 		listWiev1 = (ListView)findViewById(R.id.listView1);
 		listWiev1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
-		myAdapter = new SimpleAdapter(this, myData, R.layout.item, new String[] {"id", "distance", "time"}, 
+		myAdapter = new SimpleAdapter(this, myData, R.layout.item, new String[] {"date", "distance", "time"}, 
 									new int[] {R.id.textView1, R.id.textView2, R.id.textView3});
 		
 		listWiev1.setAdapter(myAdapter);
@@ -63,23 +58,17 @@ public class HistoryActivity extends Activity {
 	
 	@Override
 	  public boolean onContextItemSelected(MenuItem item) {
-		AdapterContextMenuInfo acmi = null;
 	    if (item.getItemId() == 1) {
 	      // получаем инфу о пункте списка
-	      acmi = (AdapterContextMenuInfo) item.getMenuInfo();
-	      // удаляем Map из коллекции, используя позицию пункта в списке
-	      
-	      // уведомляем, что данные изменились
-	      
+	      AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) item.getMenuInfo();
 	      dataTimeList = myData.get(acmi.position );
-			//myArrStrings =dataTimeList.;
 		  str = (String) (dataTimeList.get("id"));
 	      Toast.makeText(this, ((str) + String.valueOf(acmi.position)), Toast.LENGTH_SHORT).show();
 	      ioDB.createDB();
 	      ioDB.delete(str);
 	      ioDB.closeDB();
-	      myData.remove(acmi.position);
-	      myAdapter.notifyDataSetChanged();
+	      myData.remove(acmi.position);// удаляем Map из коллекции, используя позицию пункта в списке
+	      myAdapter.notifyDataSetChanged();// уведомляем, что данные изменились
 	      return true;
 	    
 	    }

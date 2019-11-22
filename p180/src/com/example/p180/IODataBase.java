@@ -73,7 +73,7 @@ public class IODataBase {
 		 do {
 			      m = new HashMap<String, Object>();
 			      m.put("id", cursor.getString(idColumn));
-			      m.put("distance", cursor.getString(distanceColumn));
+			      m.put("distance", cursor.getString(distanceColumn) + " km");
 			      m.put("date", cursor.getString(dateColumn));
 			      m.put("time", cursor.getString(timeColumn));
 			      data.add(m);
