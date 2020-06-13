@@ -60,6 +60,8 @@ public class MainActivity extends Activity {
 	    	if(flag == 1) {
 	    		myChronometer.setBase((Long) savedInstanceState.get("time"));
 	    		myChronometer.start();
+	    		btnStop.setEnabled(true);
+	    		btnStart.setEnabled(false);
 	    	}
 	    	if (flag == 2) {
       		  time = savedInstanceState.getLong("elapsedTime");
